@@ -57,13 +57,19 @@ install_version() {
 
   echo "Got platform $(get_platform) and arch $(get_arch)"
 
-  # Check if a directory matching ${tool_cmd}_${version}_$(get_platform)_$(get_arch) exists in the $ASDF_DOWNLOAD_PATH.
+  # Check if a directory matching ${tool_cmd}_${version}_* exists in the extracted archive in $ASDF_DOWNLOAD_PATH.
   # This addresses a change made by Charmbracelet to the way vhs is packaged.
   # If there is, update the ASDF_DOWNLOAD_PATH to that directory.
   # See https://github.com/charmbracelet/meta/pull/140 for more info.
-  if [ -d "$ASDF_DOWNLOAD_PATH"/"${tool_cmd}_${version}_$(get_platform)_$(get_arch)" ]; then
-    ASDF_DOWNLOAD_PATH="$ASDF_DOWNLOAD_PATH"/"${tool_cmd}_${version}_$(get_platform)_$(get_arch)"
-  fi
+  for dir in "$ASDF_DOWNLOAD_PATH"/"${tool_cmd}_${version}"_*; do
+    if [ -d "$dir" ]; then
+      ASDF_DOWNLOAD_PATH="$dir"
+      break
+    fi
+  done
+  # if [ -d "$ASDF_DOWNLOAD_PATH"/"${tool_cmd}_${version}_$(get_platform)_$(get_arch)" ]; then
+  #   ASDF_DOWNLOAD_PATH="$ASDF_DOWNLOAD_PATH"/"${tool_cmd}_${version}_$(get_platform)_$(get_arch)"
+  # fi
 
   (
     mkdir -p "$install_path"/bin
