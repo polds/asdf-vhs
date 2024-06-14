@@ -55,6 +55,8 @@ install_version() {
     fail "asdf-$TOOL_NAME supports release installs only"
   fi
 
+  echo "Got platform $(get_platform) and arch $(get_arch)"
+
   # Check if a directory matching ${tool_cmd}_${version}_$(get_platform)_$(get_arch) exists in the $ASDF_DOWNLOAD_PATH.
   # This addresses a change made by Charmbracelet to the way vhs is packaged.
   # If there is, update the ASDF_DOWNLOAD_PATH to that directory.
